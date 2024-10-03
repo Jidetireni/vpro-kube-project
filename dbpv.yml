@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vprodb-pv
+  labels:
+    pv-name: vprodb-pv  # Label to match with PVC selector
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 100Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  hostPath:
+    path: /home/banm/vpro-kube/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vprodb-pvc
+  namespace: vpro-ns
+spec:
+  storageClassName: "standard"  # Matches the PV storage class
+  volumeMode: Filesystem
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  selector:
+    matchLabels:
+      pv-name: vprodb-pv  # Match this label with the PV
