@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprodb 
+  namespace: vpro-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vprodb 
+  template:
+    metadata:
+      labels:
+        app: vprodb 
+    spec:
+      containers:
+      - name: vprodb 
+        image: vprofile/vprofiledb
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: db-store
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports: 
+          - name: vprodb-port
+            containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: vpro-cret
+                key: db-pass
+      volumes:
+        - name: db-store
+          persistentVolumeClaim:
+            claimName: vprodb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vprodb 
+  namespace: vpro-ns
+spec:
+  type: ClusterIP
+  selector:
+    app: vprodb
+  ports:
+  - port: 3306
+    targetPort: vprodb-port
+    protocol: TCP
+ 
