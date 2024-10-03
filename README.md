@@ -1,4 +1,4 @@
-```markdown
+
 # Vprofile - Java Web Application Project Using Kubernetes
 
 ## Project Overview
@@ -87,4 +87,3 @@ If you would like to contribute to the project, please feel free to submit a pul
 - Inspired by Kubernetes documentation and community resources.
 - Thanks to contributors who provided feedback and support.
 
-```
