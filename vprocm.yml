@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vpro-cm
+  namespace: vpro-ns
+data:
+  rmq_user: guest
